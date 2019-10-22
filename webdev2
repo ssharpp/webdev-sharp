@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Leaflet Map</title>
+    <!-- External Stylesheets -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+    <h2>Interactive Leaflet Map</h2>
+    <hr>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, #map {
+            height: 100%;
+            width: 100%;
+        }</style>
+</head>
+
+<body>
+        <p>GIS 4533: Samuel Sharp</p>
+        <a href="https://leafletjs.com/">I built this with Leaflet</a>
+<div id="map"></div>
+<!-- Add the Leaflet JavaScript library -->
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>    
+
+    <script> 
+    
+    //Create variable to hold map element, give initial settings to map
+    var map = L.map('map',{ center: [42.362432, -71.086086], zoom: 14});
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: '&copy; OpenStreetMap'}).addTo(map);
+    
+    //Create point feature for Kendall Square T Station
+        var myDataPoint = L.marker([42.362432, -71.086086]).addTo(map);
+    
+    //Create line feature for Mass Ave Bridge, style and add to map
+        var myDataLine = L.polyline([[42.357227, -71.092631], [42.351411, -71.089723]], {color: 'red', weight: 10}).addTo(map);
+    
+    //Create polygon feature for MIT, style and add to map
+        var myArea = L.polygon([[42.353770, -71.103606], [42.355447, -71.104475],[42.362681, -71.089830],[42.361829, -71.079230]], {color: 'blue', weight: 4}).addTo(map);
+    
+    //Bind popup to Data Point object
+        myDataPoint.bindPopup("This is Kendall Square."); 
+        
+    //Bind popup to data point object
+        myDataPoint.bindPopup("<h3>Kendall Square</h3><p>Cambridge, MA<br>Information about Kendall Square.</p>");
+        
+    //Create an Empty Popup
+        var popup = L.popup();
+        
+    //Write function to set Properties of the Popup
+        function onMapClick(e) {
+            popup
+                .setLatLng (e.latlng)
+                .setContent("You clicked the map at " + e.latlng.toString())
+                .openOn(map);
+            
+        }
+        
+        //Listen for a click event on the Map element
+        map.on('click', onMapClick);
+        </script>
+        
+    </body>
+</html>

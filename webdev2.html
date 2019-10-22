@@ -7,37 +7,39 @@
     <!-- External Stylesheets -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"/>
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+    
+<!-- omnivore -->
+    <script>  src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'</script>
+    
+    
     <h2>Interactive Leaflet Map</h2>
     <hr>
+    <p>GIS 4533: Samuel Sharp</p>
+        <a href="https://leafletjs.com/">I built this with Leaflet</a>
     <style>
         body {
-
-    padding: 0;
-    margin: 0;
-
+            padding: 0;
+            margin: 0;
         }
         html, body, #map {
             height: 100%;
             width: 100%;
-
-
         }
-   </style>
+        #map {
+            top 60px
+        }
     
-
+    </style>
 </head>
 
 <body>
-        <p>GIS 4533: Samuel Sharp</p>
-        <a href="https://leafletjs.com/">I built this with Leaflet</a>
-
-
-
+        
+<div id="map"></div>
 <!-- Add the Leaflet JavaScript library -->
 <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>    
-
-    <script> 
     
+    <script> 
+        
     //Create variable to hold map element, give initial settings to map
     var map = L.map('map',{ center: [42.362432, -71.086086], zoom: 14});
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: '&copy; OpenStreetMap'}).addTo(map);
@@ -72,6 +74,13 @@
         //Listen for a click event on the Map element
         map.on('click', onMapClick);
         </script>
+   
+    
+    <!-- csv data -->
+     <script> var myAirports = omnivore.csv('https://raw.githubusercontent.com/gis4533-fall2019/webdev-unit/master/airports.csv', null, customLayer).addTo(map);
+    
+     var customLayer = L.geoJson(null, {pointToLayer: function (feature, latlong) {return L.marker(latlong, {icon: myAirplane});}}); </script>
+    
         
     </body>
 </html>

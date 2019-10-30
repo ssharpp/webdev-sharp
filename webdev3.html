@@ -30,24 +30,59 @@
     <script> 
     
     //Create variable to hold map element, give initial settings to map
-    var map = L.map('map',{ center: [42.362432, -71.086086], zoom: 14});
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: '&copy; OpenStreetMap'}).addTo(map);
     
-    //Create point feature for Kendall Square T Station
-        var myDataPoint = L.marker([42.362432, -71.086086]).addTo(map);
-    
-    //Create line feature for Mass Ave Bridge, style and add to map
-        var myDataLine = L.polyline([[42.357227, -71.092631], [42.351411, -71.089723]], {color: 'red', weight: 10}).addTo(map);
-    
-    //Create polygon feature for MIT, style and add to map
-        var myArea = L.polygon([[42.353770, -71.103606], [42.355447, -71.104475],[42.362681, -71.089830],[42.361829, -71.079230]], {color: 'blue', weight: 4}).addTo(map);
-    
-    //Bind popup to Data Point object
-        myDataPoint.bindPopup("This is Kendall Square."); 
+    //Add new basemap
         
-    //Bind popup to data point object
-        myDataPoint.bindPopup("<h3>Kendall Square</h3><p>Cambridge, MA<br>Information about Kendall Square.</p>");
+        var map = L.map('map',{ center: [46.77035, -92.12242], zoom: 9});
+    L.tileLayer('https://{s}.tile.thunderforest.com/transport-dark/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
         
+    </script>
+        
+        
+    <script>
+        //Create point feature for Split Rock Lighthouse
+        var marker = L.marker([47.2000, -91.3670]).addTo(map);
+        
+        marker.bindPopup("This is Split Rock Lighthouse").openPopup();
+        
+    </script>
+    
+    <script>
+        
+         //Create point feature for Enger Tower
+        var marker = L.marker([46.7761, -92.1250]).addTo(map);
+          marker.bindPopup("This is Enger Tower").openPopup();
+        
+        </script>
+    
+    <script>
+        
+        //Create point feature for Hawk Ridge
+        var marker = L.marker([46.8460, -92.0333]).addTo(map);
+          marker.bindPopup("This is Hawk Ridge").openPopup();
+        
+    </script>
+    
+    <script> 
+            //Create point feature for Duluth
+            
+            var marker = L.marker([46.77035, -92.12242]).
+        addTo(map);
+            
+            marker.bindPopup("This is Duluth").openPopup(); 
+        </script>
+        
+    <script>
+    //Mouse move
+L.control.mousePosition(position).addTo(map)    
+    
+    
+</script>    
+      
+    
+    
+    <script>
+    
     //Create an Empty Popup
         var popup = L.popup();
         

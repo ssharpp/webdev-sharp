@@ -73,13 +73,23 @@
         
         //Listen for a click event on the Map element
         map.on('click', onMapClick);
+        
         </script>
+    
+    
    
     
-    <!-- csv data -->
-     <script> var myAirports = omnivore.csv('https://raw.githubusercontent.com/gis4533-fall2019/webdev-unit/master/airports.csv', null, customLayer).addTo(map);
-    
-     var customLayer = L.geoJson(null, {pointToLayer: function (feature, latlong) {return L.marker(latlong, {icon: myAirplane});}}); </script>
+    <!-- csv data and airport icons -->
+     <script 
+        
+    var airportIcon = L.Icon({
+        iconUrl: 'airport.png', iconSize: [50,40]});
+             
+    var customLayer = L.geoJson(null ,{pointToLayer: function(feature, latlng) {return L.marker(latlng, {icon: airportIcon});}});
+             
+    var airportsLayer = omnivore.csv('https://raw.githubusercontent.com/gis4533-fall2019/webdev-unit/master/airports.csv', null, customLayer).addTo(map);
+        
+         ></script>
     
         
     </body>

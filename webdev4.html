@@ -7,9 +7,83 @@
     <!-- External Stylesheets -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"/>
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
-    <h2>Interactive Leaflet Map</h2>
-    <hr>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/core.js" integrity="sha256-36hEPcG8mKookfvUVvEqRkpdYV1unP6wvxIqbgdeVhk=" crossorigin="anonymous"></script>
+    
+    <script>
+        
+        // load GeoJSON from an external file        
+$.getJSON("../data/duluth_precincts_WGS84.geojson",function(data){
+
+    // add GeoJSON layer to the map once the file is loaded
+    L.geoJson(data,{
+        style: function (feature) {
+
+            // calculate third party percent of vote using function
+            var thirdPartyPct = calculateThirdPartyPct(feature);
+
+            // assign colors from the ColorBrewer yellow-green scale
+            var fill;
+            // equal interval classification
+            // 7% or less
+            if (thirdPartyPct <= 7) {
+                fill = '#f7fcb9';
+            }
+            // 11% or less
+            else if (thirdPartyPct <= 11) {
+                fill = '#addd8e';
+            }
+            // 12% or more
+            else {
+                fill = '#31a354';
+            }
+
+            // FIXME: remove existing symbolization and create a diverging
+            // symbology based the democrat or republic vote as a percent
+            // of the total vote.
+            // Use Colorbrewer's 5-class Red-Blue colors for this
+            // http://colorbrewer2.org/#type=diverging&scheme=RdBu&n=5
+
+            // return style specification
+            return {
+                color: '#636363',
+                weight: 2,
+                fillColor: fill,
+                fillOpacity: 0.7
+            }
+        },
+
+        // do something to each feature
+        // in this case create a popup
+        onEachFeature: function (feature, layer) {
+            var thirdPartyPct = calculateThirdPartyPct(feature);
+            // show name of precinct and third party percent in popup
+            layer.bindPopup(
+                "<h3>" + feature.properties.PCTNAME + "</h3>" +
+                "<p>Third Party Vote: " + thirdPartyPct + "%</p>"
+            );
+        }
+    }).addTo(map);
+});	
+
+// a function that takes a feature and returns the percent of the vote
+// that doesn't belong to Republican or Democrat (ie. Third Party)
+function calculateThirdPartyPct(feature) {
+    var demVote = feature.properties.USPRSDFL;
+    var repVote = feature.properties.USPRSR;
+    var totalVote = feature.properties.USPRSTOTAL;
+    // third party vote is whatever is left over from dem and rep vote
+    var thirdPartyVote = (totalVote - demVote - repVote);
+    // calculate as a percent of the total vote
+    var thirdPartyPct = Math.round(thirdPartyVote/totalVote*100);
+    // return the third party percent for this feature
+    return thirdPartyPct;
+}
+    </script>
+    
+    
     <style>
+ 
         body {
             padding: 0;
             margin: 0;
@@ -17,12 +91,50 @@
         html, body, #map {
             height: 100%;
             width: 100%;
-        }</style>
+            }
+        header {
+            top: 0;
+            width: 100%;
+            z-index: 999999;
+            height: 80px;
+            color: black;
+            background-color: salmon;
+            padding-left: 12px;
+            overflow: hidden;
+            font-family: Times New Roman, sans-serif;
+            
+        }
+       
+        header * {
+            display: inline-block;
+            margin-right: 20px;
+            margin-top: 10px;
+        }
+        
+        .right * {
+            float: right;
+        }
+        
+        header h3 {
+            margin-top: 25px;
+        }
+        
+        a {color: black;
+        }
+        
+    </style>
 </head>
 
 <body>
-        <p>GIS 4533: Samuel Sharp</p>
-        <a href="https://leafletjs.com/">I built this with Leaflet</a>
+    
+    <header id="header">
+        
+        <h2>Leaflet Map</h2>   
+        <h3 class="right">GIS 4533: Samuel Sharp</h3>
+        <h3> <a href="https://leafletjs.com/" target="_blank">I built this with Leaflet</a></h3>
+    
+    </header>
+    
 <div id="map"></div>
 <!-- Add the Leaflet JavaScript library -->
 <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>    
@@ -30,24 +142,59 @@
     <script> 
     
     //Create variable to hold map element, give initial settings to map
-    var map = L.map('map',{ center: [42.362432, -71.086086], zoom: 14});
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: '&copy; OpenStreetMap'}).addTo(map);
     
-    //Create point feature for Kendall Square T Station
-        var myDataPoint = L.marker([42.362432, -71.086086]).addTo(map);
-    
-    //Create line feature for Mass Ave Bridge, style and add to map
-        var myDataLine = L.polyline([[42.357227, -71.092631], [42.351411, -71.089723]], {color: 'red', weight: 10}).addTo(map);
-    
-    //Create polygon feature for MIT, style and add to map
-        var myArea = L.polygon([[42.353770, -71.103606], [42.355447, -71.104475],[42.362681, -71.089830],[42.361829, -71.079230]], {color: 'blue', weight: 4}).addTo(map);
-    
-    //Bind popup to Data Point object
-        myDataPoint.bindPopup("This is Kendall Square."); 
+    //Add new basemap
         
-    //Bind popup to data point object
-        myDataPoint.bindPopup("<h3>Kendall Square</h3><p>Cambridge, MA<br>Information about Kendall Square.</p>");
+        var map = L.map('map',{ center: [46.77035, -92.12242], zoom: 9});
+    L.tileLayer('https://{s}.tile.thunderforest.com/transport-dark/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
         
+    </script>
+        
+        
+    <script>
+        //Create point feature for Split Rock Lighthouse
+        var marker = L.marker([47.2000, -91.3670]).addTo(map);
+        
+        marker.bindPopup("This is Split Rock Lighthouse").openPopup();
+        
+    </script>
+    
+    <script>
+        
+         //Create point feature for Enger Tower
+        var marker = L.marker([46.7761, -92.1250]).addTo(map);
+          marker.bindPopup("This is Enger Tower").openPopup();
+        
+        </script>
+    
+    <script>
+        
+        //Create point feature for Hawk Ridge
+        var marker = L.marker([46.8460, -92.0333]).addTo(map);
+          marker.bindPopup("This is Hawk Ridge").openPopup();
+        
+    </script>
+    
+    <script> 
+            //Create point feature for Duluth
+            
+            var marker = L.marker([46.77035, -92.12242]).
+        addTo(map);
+            
+            marker.bindPopup("This is Duluth").openPopup(); 
+        </script>
+        
+    <script>
+    //Mouse move
+L.control.mousePosition(position).addTo(map)    
+    
+    
+</script>    
+      
+    
+    
+    <script>
+    
     //Create an Empty Popup
         var popup = L.popup();
         

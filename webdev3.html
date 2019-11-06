@@ -18,11 +18,17 @@
         html, body, #map {
             height: 100%;
             width: 100%;
+
             }
+
+        }
+        
+
         header {
             top: 0;
             width: 100%;
             z-index: 999999;
+
             height: 80px;
             color: black;
             background-color: salmon;
@@ -39,20 +45,43 @@
         }
         
         .right * {
+
+            height: 70px;
+            color: Black;
+            background-color: lightcoral;
+            padding-left: 12;
+            font-family: Times New Roman, sans-serif;
+            
+        }
+        
+        header * {
+            display: inline-block;
+            margin-right: 20px;
+            margin-top: 25px;
+        }
+        
+        .right  {
+
             float: right;
         }
         
         header h3 {
+
             margin-top: 25px;
         }
         
         a {color: black;
         }
         
+
+            margin-top: 5px
+        }
+
     </style>
 </head>
 
 <body>
+
     
     <header id="header">
         
@@ -62,6 +91,16 @@
     
     </header>
     
+
+        
+    <header id = "header">
+    <h2> Leaflet Map</h2>
+    <h3 class="right">GIS 4533: Samuel Sharp</h3>
+    <h4><a href="https://leafletjs.com/">I built this with Leaflet</a></h3>
+    </header>
+    
+    
+
 <div id="map"></div>
 <!-- Add the Leaflet JavaScript library -->
 <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>    
@@ -88,9 +127,9 @@
     
     <script>
         
-         //Create point feature for Enger Tower
-        var marker = L.marker([46.7761, -92.1250]).addTo(map);
-          marker.bindPopup("This is Enger Tower").openPopup();
+         //Create point feature for Two Harbors
+        var marker = L.marker([47.0227, -91.6707]).addTo(map);
+          marker.bindPopup("This is Two Harbors").openPopup();
         
         </script>
     
@@ -112,6 +151,8 @@
         </script>
         
     <script>
+    
+        
     //Mouse move
 L.control.mousePosition(position).addTo(map)    
     
